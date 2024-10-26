@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ModelEF.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="ID_Cliente" />
+          </Key>
+          <Property Name="ID_Cliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DNI" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Apellido" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Correo_Electronico" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Ciudad" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Pais" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Sexo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Fecha_de_Nacimiento" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Detalles_Venta">
+          <Key>
+            <PropertyRef Name="ID_Venta" />
+            <PropertyRef Name="ID_Producto" />
+          </Key>
+          <Property Name="ID_Venta" Type="int" Nullable="false" />
+          <Property Name="ID_Producto" Type="int" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="Precio_Unitario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Metodos_Pago">
+          <Key>
+            <PropertyRef Name="ID_Metodo_Pago" />
+          </Key>
+          <Property Name="ID_Metodo_Pago" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Cliente" Type="int" Nullable="false" />
+          <Property Name="Metodo_Pago" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Numero_Tarjeta" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Titular_Tarjeta" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Fecha_Caducidad" Type="date" Nullable="false" />
+          <Property Name="CVV" Type="varchar" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Productos">
+          <Key>
+            <PropertyRef Name="ID_Producto" />
+          </Key>
+          <Property Name="ID_Producto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Precio" Type="int" Nullable="false" />
+          <Property Name="Categoria" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tallas_disponibles" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Color" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Stock" Type="int" Nullable="false" />
+          <Property Name="ID_Proveedor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Proveedores">
+          <Key>
+            <PropertyRef Name="ID_Proveedor" />
+          </Key>
+          <Property Name="ID_Proveedor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre_Proveedor" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Contacto" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Correo_Electronico" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ventas">
+          <Key>
+            <PropertyRef Name="ID_Venta" />
+          </Key>
+          <Property Name="ID_Venta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Cliente" Type="int" Nullable="false" />
+          <Property Name="Fecha_Venta" Type="datetime" Nullable="false" />
+          <Property Name="Estado_Venta" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Total_Venta" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="ID_Metodo_Pago" Type="int" Nullable="false" />
+          <Property Name="Costo_Envio" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Detalles___ID_Pr__534D60F1">
+          <End Role="Productos" Type="Self.Productos" Multiplicity="1" />
+          <End Role="Detalles_Venta" Type="Self.Detalles_Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productos">
+              <PropertyRef Name="ID_Producto" />
+            </Principal>
+            <Dependent Role="Detalles_Venta">
+              <PropertyRef Name="ID_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detalles___ID_Ve__5441852A">
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="1" />
+          <End Role="Detalles_Venta" Type="Self.Detalles_Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ventas">
+              <PropertyRef Name="ID_Venta" />
+            </Principal>
+            <Dependent Role="Detalles_Venta">
+              <PropertyRef Name="ID_Venta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Metodos_P__ID_Cl__5535A963">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Metodos_Pago" Type="Self.Metodos_Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="ID_Cliente" />
+            </Principal>
+            <Dependent Role="Metodos_Pago">
+              <PropertyRef Name="ID_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Productos__ID_Pr__5629CD9C">
+          <End Role="Proveedores" Type="Self.Proveedores" Multiplicity="1" />
+          <End Role="Productos" Type="Self.Productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedores">
+              <PropertyRef Name="ID_Proveedor" />
+            </Principal>
+            <Dependent Role="Productos">
+              <PropertyRef Name="ID_Proveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ventas__ID_Clien__571DF1D5">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="ID_Cliente" />
+            </Principal>
+            <Dependent Role="Ventas">
+              <PropertyRef Name="ID_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ventas__ID_Metod__5812160E">
+          <End Role="Metodos_Pago" Type="Self.Metodos_Pago" Multiplicity="1" />
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Metodos_Pago">
+              <PropertyRef Name="ID_Metodo_Pago" />
+            </Principal>
+            <Dependent Role="Ventas">
+              <PropertyRef Name="ID_Metodo_Pago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelEFStoreContainer">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Detalles_Venta" EntityType="Self.Detalles_Venta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Metodos_Pago" EntityType="Self.Metodos_Pago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Productos" EntityType="Self.Productos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proveedores" EntityType="Self.Proveedores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ventas" EntityType="Self.Ventas" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Detalles___ID_Pr__534D60F1" Association="Self.FK__Detalles___ID_Pr__534D60F1">
+            <End Role="Productos" EntitySet="Productos" />
+            <End Role="Detalles_Venta" EntitySet="Detalles_Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detalles___ID_Ve__5441852A" Association="Self.FK__Detalles___ID_Ve__5441852A">
+            <End Role="Ventas" EntitySet="Ventas" />
+            <End Role="Detalles_Venta" EntitySet="Detalles_Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Metodos_P__ID_Cl__5535A963" Association="Self.FK__Metodos_P__ID_Cl__5535A963">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Metodos_Pago" EntitySet="Metodos_Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Productos__ID_Pr__5629CD9C" Association="Self.FK__Productos__ID_Pr__5629CD9C">
+            <End Role="Proveedores" EntitySet="Proveedores" />
+            <End Role="Productos" EntitySet="Productos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ventas__ID_Clien__571DF1D5" Association="Self.FK__Ventas__ID_Clien__571DF1D5">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Ventas" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ventas__ID_Metod__5812160E" Association="Self.FK__Ventas__ID_Metod__5812160E">
+            <End Role="Metodos_Pago" EntitySet="Metodos_Pago" />
+            <End Role="Ventas" EntitySet="Ventas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ModelEF" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="ID_Cliente" />
+          </Key>
+          <Property Name="ID_Cliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DNI" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Correo_Electronico" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ciudad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pais" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sexo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_de_Nacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Metodos_Pago" Relationship="Self.FK__Metodos_P__ID_Cl__5535A963" FromRole="Clientes" ToRole="Metodos_Pago" />
+          <NavigationProperty Name="Ventas" Relationship="Self.FK__Ventas__ID_Clien__571DF1D5" FromRole="Clientes" ToRole="Ventas" />
+        </EntityType>
+        <EntityType Name="Detalles_Venta">
+          <Key>
+            <PropertyRef Name="ID_Venta" />
+            <PropertyRef Name="ID_Producto" />
+          </Key>
+          <Property Name="ID_Venta" Type="Int32" Nullable="false" />
+          <Property Name="ID_Producto" Type="Int32" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Precio_Unitario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Productos" Relationship="Self.FK__Detalles___ID_Pr__534D60F1" FromRole="Detalles_Venta" ToRole="Productos" />
+          <NavigationProperty Name="Ventas" Relationship="Self.FK__Detalles___ID_Ve__5441852A" FromRole="Detalles_Venta" ToRole="Ventas" />
+        </EntityType>
+        <EntityType Name="Metodos_Pago">
+          <Key>
+            <PropertyRef Name="ID_Metodo_Pago" />
+          </Key>
+          <Property Name="ID_Metodo_Pago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Cliente" Type="Int32" Nullable="false" />
+          <Property Name="Metodo_Pago" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Numero_Tarjeta" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Titular_Tarjeta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha_Caducidad" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CVV" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Clientes" Relationship="Self.FK__Metodos_P__ID_Cl__5535A963" FromRole="Metodos_Pago" ToRole="Clientes" />
+          <NavigationProperty Name="Ventas" Relationship="Self.FK__Ventas__ID_Metod__5812160E" FromRole="Metodos_Pago" ToRole="Ventas" />
+        </EntityType>
+        <EntityType Name="Productos">
+          <Key>
+            <PropertyRef Name="ID_Producto" />
+          </Key>
+          <Property Name="ID_Producto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Precio" Type="Int32" Nullable="false" />
+          <Property Name="Categoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tallas_disponibles" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Color" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Stock" Type="Int32" Nullable="false" />
+          <Property Name="ID_Proveedor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Detalles_Venta" Relationship="Self.FK__Detalles___ID_Pr__534D60F1" FromRole="Productos" ToRole="Detalles_Venta" />
+          <NavigationProperty Name="Proveedores" Relationship="Self.FK__Productos__ID_Pr__5629CD9C" FromRole="Productos" ToRole="Proveedores" />
+        </EntityType>
+        <EntityType Name="Proveedores">
+          <Key>
+            <PropertyRef Name="ID_Proveedor" />
+          </Key>
+          <Property Name="ID_Proveedor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre_Proveedor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contacto" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Correo_Electronico" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Productos" Relationship="Self.FK__Productos__ID_Pr__5629CD9C" FromRole="Proveedores" ToRole="Productos" />
+        </EntityType>
+        <EntityType Name="Ventas">
+          <Key>
+            <PropertyRef Name="ID_Venta" />
+          </Key>
+          <Property Name="ID_Venta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Cliente" Type="Int32" Nullable="false" />
+          <Property Name="Fecha_Venta" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Estado_Venta" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Total_Venta" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="ID_Metodo_Pago" Type="Int32" Nullable="false" />
+          <Property Name="Costo_Envio" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Clientes" Relationship="Self.FK__Ventas__ID_Clien__571DF1D5" FromRole="Ventas" ToRole="Clientes" />
+          <NavigationProperty Name="Detalles_Venta" Relationship="Self.FK__Detalles___ID_Ve__5441852A" FromRole="Ventas" ToRole="Detalles_Venta" />
+          <NavigationProperty Name="Metodos_Pago" Relationship="Self.FK__Ventas__ID_Metod__5812160E" FromRole="Ventas" ToRole="Metodos_Pago" />
+        </EntityType>
+        <Association Name="FK__Metodos_P__ID_Cl__5535A963">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Metodos_Pago" Type="Self.Metodos_Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="ID_Cliente" />
+            </Principal>
+            <Dependent Role="Metodos_Pago">
+              <PropertyRef Name="ID_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ventas__ID_Clien__571DF1D5">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="ID_Cliente" />
+            </Principal>
+            <Dependent Role="Ventas">
+              <PropertyRef Name="ID_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detalles___ID_Pr__534D60F1">
+          <End Role="Productos" Type="Self.Productos" Multiplicity="1" />
+          <End Role="Detalles_Venta" Type="Self.Detalles_Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productos">
+              <PropertyRef Name="ID_Producto" />
+            </Principal>
+            <Dependent Role="Detalles_Venta">
+              <PropertyRef Name="ID_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Detalles___ID_Ve__5441852A">
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="1" />
+          <End Role="Detalles_Venta" Type="Self.Detalles_Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ventas">
+              <PropertyRef Name="ID_Venta" />
+            </Principal>
+            <Dependent Role="Detalles_Venta">
+              <PropertyRef Name="ID_Venta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ventas__ID_Metod__5812160E">
+          <End Role="Metodos_Pago" Type="Self.Metodos_Pago" Multiplicity="1" />
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Metodos_Pago">
+              <PropertyRef Name="ID_Metodo_Pago" />
+            </Principal>
+            <Dependent Role="Ventas">
+              <PropertyRef Name="ID_Metodo_Pago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Productos__ID_Pr__5629CD9C">
+          <End Role="Proveedores" Type="Self.Proveedores" Multiplicity="1" />
+          <End Role="Productos" Type="Self.Productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedores">
+              <PropertyRef Name="ID_Proveedor" />
+            </Principal>
+            <Dependent Role="Productos">
+              <PropertyRef Name="ID_Proveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BDEFEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" />
+          <EntitySet Name="Detalles_Venta" EntityType="Self.Detalles_Venta" />
+          <EntitySet Name="Metodos_Pago" EntityType="Self.Metodos_Pago" />
+          <EntitySet Name="Productos" EntityType="Self.Productos" />
+          <EntitySet Name="Proveedores" EntityType="Self.Proveedores" />
+          <EntitySet Name="Ventas" EntityType="Self.Ventas" />
+          <AssociationSet Name="FK__Metodos_P__ID_Cl__5535A963" Association="Self.FK__Metodos_P__ID_Cl__5535A963">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Metodos_Pago" EntitySet="Metodos_Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ventas__ID_Clien__571DF1D5" Association="Self.FK__Ventas__ID_Clien__571DF1D5">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Ventas" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detalles___ID_Pr__534D60F1" Association="Self.FK__Detalles___ID_Pr__534D60F1">
+            <End Role="Productos" EntitySet="Productos" />
+            <End Role="Detalles_Venta" EntitySet="Detalles_Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Detalles___ID_Ve__5441852A" Association="Self.FK__Detalles___ID_Ve__5441852A">
+            <End Role="Ventas" EntitySet="Ventas" />
+            <End Role="Detalles_Venta" EntitySet="Detalles_Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ventas__ID_Metod__5812160E" Association="Self.FK__Ventas__ID_Metod__5812160E">
+            <End Role="Metodos_Pago" EntitySet="Metodos_Pago" />
+            <End Role="Ventas" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Productos__ID_Pr__5629CD9C" Association="Self.FK__Productos__ID_Pr__5629CD9C">
+            <End Role="Proveedores" EntitySet="Proveedores" />
+            <End Role="Productos" EntitySet="Productos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelEFStoreContainer" CdmEntityContainer="BDEFEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="ModelEF.Clientes">
+              <MappingFragment StoreEntitySet="Clientes">
+                <ScalarProperty Name="ID_Cliente" ColumnName="ID_Cliente" />
+                <ScalarProperty Name="DNI" ColumnName="DNI" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Correo_Electronico" ColumnName="Correo_Electronico" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="Pais" ColumnName="Pais" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="Fecha_de_Nacimiento" ColumnName="Fecha_de_Nacimiento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Detalles_Venta">
+            <EntityTypeMapping TypeName="ModelEF.Detalles_Venta">
+              <MappingFragment StoreEntitySet="Detalles_Venta">
+                <ScalarProperty Name="ID_Venta" ColumnName="ID_Venta" />
+                <ScalarProperty Name="ID_Producto" ColumnName="ID_Producto" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Precio_Unitario" ColumnName="Precio_Unitario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Metodos_Pago">
+            <EntityTypeMapping TypeName="ModelEF.Metodos_Pago">
+              <MappingFragment StoreEntitySet="Metodos_Pago">
+                <ScalarProperty Name="ID_Metodo_Pago" ColumnName="ID_Metodo_Pago" />
+                <ScalarProperty Name="ID_Cliente" ColumnName="ID_Cliente" />
+                <ScalarProperty Name="Metodo_Pago" ColumnName="Metodo_Pago" />
+                <ScalarProperty Name="Numero_Tarjeta" ColumnName="Numero_Tarjeta" />
+                <ScalarProperty Name="Titular_Tarjeta" ColumnName="Titular_Tarjeta" />
+                <ScalarProperty Name="Fecha_Caducidad" ColumnName="Fecha_Caducidad" />
+                <ScalarProperty Name="CVV" ColumnName="CVV" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Productos">
+            <EntityTypeMapping TypeName="ModelEF.Productos">
+              <MappingFragment StoreEntitySet="Productos">
+                <ScalarProperty Name="ID_Producto" ColumnName="ID_Producto" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="Tallas_disponibles" ColumnName="Tallas_disponibles" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="ID_Proveedor" ColumnName="ID_Proveedor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proveedores">
+            <EntityTypeMapping TypeName="ModelEF.Proveedores">
+              <MappingFragment StoreEntitySet="Proveedores">
+                <ScalarProperty Name="ID_Proveedor" ColumnName="ID_Proveedor" />
+                <ScalarProperty Name="Nombre_Proveedor" ColumnName="Nombre_Proveedor" />
+                <ScalarProperty Name="Contacto" ColumnName="Contacto" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Correo_Electronico" ColumnName="Correo_Electronico" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ventas">
+            <EntityTypeMapping TypeName="ModelEF.Ventas">
+              <MappingFragment StoreEntitySet="Ventas">
+                <ScalarProperty Name="ID_Venta" ColumnName="ID_Venta" />
+                <ScalarProperty Name="ID_Cliente" ColumnName="ID_Cliente" />
+                <ScalarProperty Name="Fecha_Venta" ColumnName="Fecha_Venta" />
+                <ScalarProperty Name="Estado_Venta" ColumnName="Estado_Venta" />
+                <ScalarProperty Name="Total_Venta" ColumnName="Total_Venta" />
+                <ScalarProperty Name="ID_Metodo_Pago" ColumnName="ID_Metodo_Pago" />
+                <ScalarProperty Name="Costo_Envio" ColumnName="Costo_Envio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
